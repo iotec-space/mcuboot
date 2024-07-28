@@ -117,6 +117,10 @@ bootutil_img_hash(struct enc_key_data *enc_state, int image_index,
     /* If protected TLVs are present they are also hashed. */
     size += hdr->ih_protect_tlv_size;
 
+    if (size > fap->fa_size) {
+        return BOOT_EBADIMAGE;
+    }
+
 #ifdef MCUBOOT_RAM_LOAD
     bootutil_sha_update(&sha_ctx,
                         (void*)(IMAGE_RAM_BASE + hdr->ih_load_addr),
